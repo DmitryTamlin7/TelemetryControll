@@ -8,7 +8,6 @@
 <body>
 <h1>📡 Telemetry Dashboard</h1>
 
-
 <div>
     <label>Sensor ID:
         <input type="text" id="sensorId" placeholder="например, Sensor1" />
@@ -24,6 +23,9 @@
 
 <hr>
 
+<h2>График значений</h2>
+<canvas id="telemetry-chart" width="800" height="400"></canvas>
+
 <h2>Последние данные</h2>
 <table border="1" id="telemetry-table">
     <thead>
@@ -37,10 +39,6 @@
     </thead>
     <tbody></tbody>
 </table>
-
-
-<h2>График значений</h2>
-<canvas id="telemetry-chart" width="800" height="400"></canvas>
 
 <script>
     async function loadData() {
@@ -62,7 +60,7 @@
         const res = await fetch(url);
         const data = await res.json();
 
-        // Таблица
+        // Обновить таблицу
         const tbody = document.querySelector('#telemetry-table tbody');
         tbody.innerHTML = '';
         data.forEach(d => {
@@ -76,7 +74,7 @@
             tbody.innerHTML += row;
         });
 
-        // График
+        // Обновить график
         const ctx = document.getElementById('telemetry-chart').getContext('2d');
         if (window.chartInstance) {
             window.chartInstance.destroy();
