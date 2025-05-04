@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  # Сервис для PostgreSQL
+  db:
+    image: postgres:13
+    container_name: telemetry-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Soadsvanpjz228123
+      POSTGRES_DB: telemetrydb
+    ports:
+      - "5432:5432"
+    volumes:
+      - telemetry-data:/var/lib/postgresql/data
+
+  # Сервис для Spring Boot приложения
+  app:
+    build: .
+    container_name: telemetry-app
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/telemetrydb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: Soadsvanpjz228123
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+
+volumes:
+  telemetry-data:
